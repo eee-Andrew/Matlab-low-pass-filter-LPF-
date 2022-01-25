@@ -1,0 +1,15 @@
+clear all 
+syms R L  C0 L0 C L I1 I2 E s 
+A=[R+s*L+1/(s*C0)+s*L0 -(1/(s*C0)+s*L0);1/(s*C0)+s*L0 -(R+s*L+1/(s*C0)+s*L0)]
+B=[E;0]
+sol=inv(A)*(B)
+H=sol(2)*R/E
+pretty(collect(simplify(H)))
+[n ,d]= numden(sym(H))
+coeffs(d,s,'all')
+R=1000; C=100e-9; C0=C; L=0.1;  L0=L
+H=tf([C0*L0*R 0 R],[C0*L^2 + 2*C0*L0*L 2*C0*L*R + 2*C0*L0*R C0*R^2 + 2*L 2*R])
+bode(H)
+figure(1)
+pole(H)
+zero(H)
